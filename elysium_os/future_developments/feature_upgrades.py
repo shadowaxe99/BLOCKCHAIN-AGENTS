@@ -45,7 +45,9 @@ class FeatureUpgrades:
                 self.persona_manager.upgrade_memory(feature)
             elif feature == 'Persona Customization':
                 self.persona_manager.apply_customization(feature, upgrade)
-            # Add more feature upgrade logic as needed
+            elif feature == 'Security Protocol Enhancement':
+                self.access_control.enhance_security_protocol(feature, upgrade)
+            # Additional upgrade logic here
 
     def ensure_compatibility(self):
         """
@@ -56,7 +58,9 @@ class FeatureUpgrades:
         for feature in self.implemented_features:
             compatible_devices = self.device_compatibility.check(feature)
             compatible_platforms = self.platform_compatibility.check(feature)
-            if not compatible_devices or not compatible_platforms:
+            # Check compatibility for Virtual Reality platforms
+            compatible_vr = self.platform_compatibility.check_vr(feature)
+            if not compatible_devices or not compatible_platforms or not compatible_vr:
                 return False  # If any feature is not compatible, return False
         return True  # All features are compatible
 
