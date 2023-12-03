@@ -34,7 +34,7 @@ class FeatureUpgrades:
                 self.persona_manager.add_persona_feature(feature)
             elif feature == 'Advanced NFT Integration':
                 self.nft_transactions.integrate_feature(feature)
-            # Add more feature implementation logic as needed
+            self.implemented_features.append(feature)  # Adding feature to the list of implemented features
 
     def upgrade_existing_features(self, feature_upgrades):
         """
@@ -45,7 +45,11 @@ class FeatureUpgrades:
                 self.persona_manager.upgrade_memory(feature)
             elif feature == 'Persona Customization':
                 self.persona_manager.apply_customization(feature, upgrade)
-            # Add more feature upgrade logic as needed
+                    # Attempt to find an existing Feature object by its name and update its properties
+        existing_feature = next((f for f in self.implemented_features if f.name == feature), None)
+        if existing_feature:
+            existing_feature.update(upgrade)  # Update the feature properties
+
 
     def ensure_compatibility(self):
         """
@@ -58,7 +62,16 @@ class FeatureUpgrades:
             compatible_platforms = self.platform_compatibility.check(feature)
             if not compatible_devices or not compatible_platforms:
                 return False  # If any feature is not compatible, return False
-        return True  # All features are compatible
+                    # Log or raise an error if a feature is not compatible
+            if not compatible_devices:
+                print(f'Feature {feature} is not compatible with devices')
+                return False
+            if not compatible_platforms:
+                print(f'Feature {feature} is not compatible with platforms')
+                return False
+        # All features are compatible
+        return True
+
 
     def test_new_upgrades(self):
         """
@@ -70,7 +83,12 @@ class FeatureUpgrades:
             test_results = self.quality_assurance.run_tests(feature)
             if not test_results.passed:
                 return False  # If any test fails, return False
-        return True  # All tests passed
+                    # Log or raise an error if a test fails
+            print(f'Test for feature {feature} failed: {test_results.fail_reason}')
+            return False
+        # All tests passed
+        return True
+
 
     def collect_and_apply_feedback(self):
         """
