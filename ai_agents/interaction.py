@@ -33,9 +33,15 @@ class InteractionManager:
         """
         if interaction_id in self.active_interactions:
             interaction = self.active_interactions[interaction_id]
-            # Process the new data based on the type of interaction
-            # This is a placeholder for the actual processing logic
-            interaction['interaction_data'].update(new_data)
+            # Example processing logic (can be extended or modified as needed):
+            if interaction['interaction_type'] == 'conversation':
+                # Assuming interaction_data has a 'messages' key that holds a list of messages
+                interaction['interaction_data']['messages'].append(new_data)
+            elif interaction['interaction_type'] == 'task assistance':
+                # Add logic specific to task assistance interactions
+                pass
+            # Update the status to reflect that new data was processed
+            interaction['status'] = 'updated'
         else:
             raise ValueError(f"No active interaction found for ID: {interaction_id}")
 
