@@ -1,4 +1,4 @@
-```python
+python
 class AgentCustomizationError(Exception):
     """Custom exception for agent customization errors."""
     pass
@@ -42,8 +42,12 @@ class AgentCustomizer:
         Save the customizations to the agent's profile. This method should be implemented
         to interact with the database or storage system where the agent's data is kept.
         """
-        # Placeholder for saving logic, to be implemented with actual storage mechanism.
-        pass
+        try:
+            with open('agent_data_file.txt', 'w') as file:
+                file.write(str(self.agent_data))
+            print("Agent's customizations have been saved successfully.")
+        except Exception as e:
+            raise AgentCustomizationError(f"Failed to save customizations: {e}")
 
 
 def customize_agent(agent_id, customization_options):
@@ -71,4 +75,4 @@ def customize_agent(agent_id, customization_options):
     customizer.save_customizations()
 
     print(f"Agent {agent_id} has been customized successfully.")
-```
+
