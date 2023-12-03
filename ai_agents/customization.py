@@ -1,4 +1,3 @@
-```python
 class AgentCustomizationError(Exception):
     """Custom exception for agent customization errors."""
     pass
@@ -42,8 +41,9 @@ class AgentCustomizer:
         Save the customizations to the agent's profile. This method should be implemented
         to interact with the database or storage system where the agent's data is kept.
         """
-        # Placeholder for saving logic, to be implemented with actual storage mechanism.
-        pass
+        # Code logic to save customizations to a persistent storage system.
+        # For demonstration purposes, the following lines simulate interaction with a database.
+        database.update_agent_profile(self.agent_data['id'], self.agent_data)
 
 
 def customize_agent(agent_id, customization_options):
@@ -54,12 +54,14 @@ def customize_agent(agent_id, customization_options):
     :param customization_options: A dictionary containing the customization details.
     """
     # Fetch the agent's current data from the database or storage system.
-    # For demonstration purposes, we'll use a placeholder for the agent's data.
-    agent_data = {
-        'color': 'blue',
-        'voice': 'default',
-        # ... other attributes
-    }
+    # For demonstration purposes, the following lines simulate interaction with a database.
+    agent_data = database.fetch_agent_data(agent_id)
+    if not agent_data:
+        raise AgentCustomizationError(f"Could not fetch data for agent with ID {agent_id}.")
+
+    # Ensure 'id' attribute is present in the agent_data
+    if 'id' not in agent_data:
+        agent_data['id'] = agent_id
 
     # Initialize the customizer with the agent's data.
     customizer = AgentCustomizer(agent_data)
@@ -71,4 +73,3 @@ def customize_agent(agent_id, customization_options):
     customizer.save_customizations()
 
     print(f"Agent {agent_id} has been customized successfully.")
-```
