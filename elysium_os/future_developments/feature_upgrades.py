@@ -45,7 +45,16 @@ class FeatureUpgrades:
                 self.persona_manager.upgrade_memory(feature)
             elif feature == 'Persona Customization':
                 self.persona_manager.apply_customization(feature, upgrade)
+            elif feature == 'Enhanced Security Protocol':
+                # Specific update logic for Enhanced Security Protocol feature
+                self.access_control.upgrade_security_protocol(upgrade)
+            elif feature == 'Extended Battery Life':
+                # Specific update logic for Extended Battery Life feature
+                self.device_compatibility.improve_battery_life(upgrade)
             # Add more feature upgrade logic as needed
+            else:
+                # General update logic for features not explicitly handled
+                self.persona_manager.generic_feature_upgrade(feature, upgrade)
 
     def ensure_compatibility(self):
         """
@@ -56,9 +65,17 @@ class FeatureUpgrades:
         for feature in self.implemented_features:
             compatible_devices = self.device_compatibility.check(feature)
             compatible_platforms = self.platform_compatibility.check(feature)
-            if not compatible_devices or not compatible_platforms:
-                return False  # If any feature is not compatible, return False
-        return True  # All features are compatible
+            feature_compatibility = {
+                'devices': compatible_devices,
+                'platforms': compatible_platforms
+            }
+
+            for aspect, compatible in feature_compatibility.items():
+                if not compatible:
+                    # Log the compatibility issues for review
+                    print(f"Compatibility issue for feature {feature} on {aspect}: {compatible}")
+                    return False  # If any feature is not compatible, return False
+        return True  # All features are compatible with all devices and platforms
 
     def test_new_upgrades(self):
         """
@@ -67,10 +84,25 @@ class FeatureUpgrades:
         """
         # Run tests for each new feature or upgrade implemented
         for feature in self.implemented_features:
-            test_results = self.quality_assurance.run_tests(feature)
-            if not test_results.passed:
-                return False  # If any test fails, return False
-        return True  # All tests passed
+            # Define specific test cases for each feature
+            if feature == 'AI Personal Assistant':
+                test_cases = ['Respond to user queries', 'Schedule appointments', 
+                              'Understand natural language', 'Work without internet']
+            elif feature == 'Advanced NFT Integration':
+                test_cases = ['Process NFT transactions', 'Display NFT artwork', 
+                              'Interact with blockchain', 'Handle invalid transactions']
+            # Additional test cases for other features can be added here
+            else:
+                test_cases = ['Default success case', 'Default failure case']
+
+            # Perform testing on all test cases
+            for test_case in test_cases:
+                test_results = self.quality_assurance.run_tests(feature, test_case)
+                if not test_results.passed:
+                    # Log failed test cases for review
+                    print(f"Test failed for feature {feature}: {test_case}")
+                    return False # If any test fails, return False
+        return True  # All test cases passed for all features
 
     def collect_and_apply_feedback(self):
         """
@@ -80,12 +112,17 @@ class FeatureUpgrades:
         # Collect feedback and apply it to the corresponding feature implementations.
         feedback = self.user_feedback.collect_feedback()
         for feature, user_opinions in feedback.items():
-            if user_opinions['positive']:
+            positive_feedback = user_opinions.get('positive', [])
+            negative_feedback = user_opinions.get('negative', [])
+            if positive_feedback:
                 # Enhance feature based on positive feedback
-                self.persona_manager.enhance_feature(feature, user_opinions['comments'])
-            if user_opinions['negative']:
+                for comment in positive_feedback:
+                    self.persona_manager.enhance_feature(feature, comment)
+            if negative_feedback:
                 # Modify or fix feature based on negative feedback
-                self.persona_manager.modify_feature(feature, user_opinions['comments'])
+                for comment in negative_feedback:
+                    self.persona_manager.modify_feature(feature, comment)
+            # Apply additional logic based on other feedback aspects if necessary
             # Additional feedback application logic can be added as needed.
 
 # Example usage
